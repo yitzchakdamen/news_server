@@ -2,7 +2,6 @@ from flask import Flask, jsonify, send_from_directory
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 from datetime import datetime
-import concurrent.futures
 
 app = Flask(__name__, static_folder='static')
 
@@ -12,38 +11,24 @@ app = Flask(__name__, static_folder='static')
 @app.route('/api/news/', methods=['GET'])
 def get_news():
     try:
-        # הגדרת מקורות החדשות והפונקציות שלהן
         sources = {
-            'kore': scrape_kore
-            # "ynet": scrape_ynet,
-            # 'inn': scrape_inn,
-            # 'walla': scrape_walla,
-            # 'israelhayom': scrape_israelhayom
+            'kore': scrape_kore,
+            "ynet": scrape_ynet,
+            'inn': scrape_inn,
+            'walla': scrape_walla,
+            'israelhayom': scrape_israelhayom
         }
         
-        # יצירת רשימה לאחסון התוצאות מכל המקורות
-        news_items = []
-        
-        # הפעלת כל הפונקציות במקביל באמצעות ThreadPoolExecutor
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            # שליחת כל הפונקציות להרצה מקבילית
-            futures = {executor.submit(func): source for source, func in sources.items()}
+        news = []
+        for _, func in sources.items():
+            print(f"התחלתי להריץ את {func.__name__}")
+            items = func()  
+            for item in items:
+                item['date'] = datetime.strptime(item['date'], "%H:%M").strftime("%H:%M")
+            news.append(item)
+            print(f"הסיימתי להריץ את {func.__name__}")
             
-            # איסוף התוצאות מכל הפונקציות
-            for future in concurrent.futures.as_completed(futures):
-                source = futures[future]
-                print(f"הסתיימה הרצת {source}")
-                try:
-                    # הוספת תאריך לכל פריט חדשות
-                    items = future.result()
-                    for item in items:
-                        item['date'] = datetime.strptime(item['date'], "%H:%M").strftime("%H:%M")
-                    news_items.extend(items)
-                except Exception as e:
-                    print(f"שגיאה בטעינת חדשות מ-{source}: {e}")
-        
-        # מיון החדשות לפי זמן (מהאחרונות לראשונות)
-        news_sorted = sorted(news_items, key=lambda x: x['date'], reverse=True)
+        news_sorted = sorted(news, key=lambda x: x['date'], reverse=True)
         
         return jsonify({
             'status': 'success',
@@ -56,7 +41,6 @@ def get_news():
             'status': 'error',
             'message': str(e)
         }), 500
-
 
 # הגשת האתר
 @app.route('/')
