@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, send_from_directory
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
+
 
 app = Flask(__name__, static_folder='static')
 
@@ -18,29 +19,33 @@ def get_news():
             'walla': scrape_walla,
             'israelhayom': scrape_israelhayom
         }
-        
+# 'inn': scrape_inn
         news = []
-        for _, func in sources.items():
+
+        for _ , func in sources.items():
             print(f"התחלתי להריץ את {func.__name__}")
-            items = func()  
+            items = func()  # הפעלת הפונקציה בפועל
             for item in items:
                 item['date'] = datetime.strptime(item['date'], "%H:%M").strftime("%H:%M")
-            news.append(item)
+                news.append(item)
             print(f"הסיימתי להריץ את {func.__name__}")
-            
+
         news_sorted = sorted(news, key=lambda x: x['date'], reverse=True)
-        
+
+
         return jsonify({
             'status': 'success',
             'sources': list(sources.keys()),
             'count': len(news_sorted),
             'data': news_sorted
         })
+
     except Exception as e:
         return jsonify({
             'status': 'error',
             'message': str(e)
         }), 500
+
 
 # הגשת האתר
 @app.route('/')

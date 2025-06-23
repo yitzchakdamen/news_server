@@ -439,7 +439,7 @@
                                             ${config.name}
                                         </span>
                                         <div class="flex flex-col items-end">
-                                            <span class="text-sm text-gray-600/90">${formatDate(item.date)}</span>
+                                            <span class="text-sm text-gray-600/90">${item.date}</span>
                                             <span class="text-xs text-gray-500 mt-1">${timePassedText}</span>
                                         </div>
                                     </div>
@@ -449,9 +449,6 @@
                                         <span class="text-sm text-gray-600/90">
                                             <i class="fas fa-user-edit mr-2"></i>
                                             ${item.writer_name || 'לא ידוע'}
-                                        </span>
-                                        <span class="text-xs text-gray-500">
-                                            זמן קריאה משוער: 3 דקות
                                         </span>
                                     </div>
                                 `;
