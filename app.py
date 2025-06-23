@@ -14,11 +14,11 @@ def get_news():
     try:
         # הגדרת מקורות החדשות והפונקציות שלהן
         sources = {
-            'kore': scrape_kore,
-            "ynet": scrape_ynet,
-            'inn': scrape_inn,
-            'walla': scrape_walla,
-            'israelhayom': scrape_israelhayom
+            'kore': scrape_kore
+            # "ynet": scrape_ynet,
+            # 'inn': scrape_inn,
+            # 'walla': scrape_walla,
+            # 'israelhayom': scrape_israelhayom
         }
         
         # יצירת רשימה לאחסון התוצאות מכל המקורות
