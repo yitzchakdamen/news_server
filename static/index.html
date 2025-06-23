@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>חדשות בזמן אמת</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Material Ripple Effect -->
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kore: { 
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            DEFAULT: '#0ea5e9' 
+                        },
+                        ynet: { 
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                            DEFAULT: '#f59e0b' 
+                        },
+                        inn: { 
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                            DEFAULT: '#8b5cf6' 
+                        },
+                        walla: { 
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                            DEFAULT: '#ec4899' 
+                        },
+                        israelhayom: { 
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            DEFAULT: '#10b981' 
+                        }
+                    },
+                    fontFamily: {
+                        hebrew: ['Rubik', 'Arial', 'sans-serif'],
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #d1d5db 100%);
+            min-height: 100vh;
+        }
+        
+            .glass-effect {
+            background: rgba(255, 255, 255, 0.15); /* הקטנת שקיפות הרקע */
+            backdrop-filter: blur(30px); /* הגדלת ערך ה-blur */
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* הקטנת שקיפות הגבול */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08); /* הקטנת אפקט הצל */
+            }
+        
+        .glass-header {
+            background: rgba(99, 102, 241, 0.8);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .news-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .source-chip {
+            border-radius: 9999px;
+            padding: 0.35rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .loading-card {
+            background: linear-gradient(90deg, rgba(240,240,240,0.3) 25%, rgba(224,224,224,0.3) 50%, rgba(240,240,240,0.3) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 241, 241, 0.5);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(136, 136, 136, 0.5);
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(85, 85, 85, 0.7);
+        }
+        
+        .container-wide {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem; /* הקטנת המרווח בצדדים */
+        padding-right: 1rem;
+        }
+
+        @media (min-width: 768px) {
+        .container-wide {
+        max-width: 1000px; /* הקטנת הרוחב המקסימלי */
+        padding-left: 2rem;
+        padding-right: 2rem;
+        }
+        }
+        
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        .time-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .time-indicator::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #4f46e5, #10b981);
+            animation: timeIndicator 180s linear forwards;
+        }
+        
+        @keyframes timeIndicator {
+            0% { width: 100%; }
+            100% { width: 0%; }
+        }
+        
+        .full-width-card {
+        max-width: calc(100% - 2rem); /* הקטנת המרווחים בצדדים */
+        margin-left: 1rem;
+        margin-right: 1rem;
+        border-radius: 0;
+        }
+        
+        @media (min-width: 768px) {
+        .full-width-card {
+        max-width: calc(100% - 4rem);
+        margin-left: 2rem;
+        margin-right: 2rem;
+        }
+}
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 to-gray-200">
+    <header class="sticky top-0 z-50 glass-header shadow-xl">
+        <div class="container-wide px-8">
+            <div class="flex items-center justify-between py-5">
+                <h1 class="text-3xl font-bold text-white animate__animated animate__fadeInLeft">
+                    <span class="glass-effect px-7 py-3.5 rounded-2xl shadow-lg flex items-center gap-4">
+                        <i class="fas fa-newspaper text-2xl"></i>
+                        <span class="gradient-text bg-gradient-to-r from-white to-blue-100">חדשות בזמן אמת</span>
+                    </span>
+                </h1>
+                <div class="flex items-center gap-4">
+                    <div class="glass-effect px-4 py-2 rounded-xl text-white text-sm font-medium hidden md:flex items-center gap-2">
+                        <i class="fas fa-clock"></i>
+                        <span id="lastUpdateTime">טוען...</span>
+                    </div>
+                    <button onclick="loadNews()" 
+                            class="flex items-center gap-3 px-6 py-3 glass-effect hover:bg-white/30 text-white rounded-xl transition-all duration-300 ripple group"
+                            data-ripple-light="true">
+                        <i class="fas fa-sync-alt animate-spin group-hover:rotate-180 transition-transform duration-500" id="refreshIcon"></i>
+                        <span class="text-lg font-medium">רענן חדשות</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-wide px-0 py-10">
+        <div id="newsContainer">
+            <div class="grid gap-10 px-4">
+                <!-- Loading Skeletons with improved shimmer effect and status message -->
+                <div class="news-card p-8 rounded-3xl shadow-xl relative overflow-hidden">
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="w-20 h-20 mb-6 rounded-full glass-effect flex items-center justify-center">
+                            <i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">טוען חדשות...</h3>
+                        <p class="text-gray-600 mb-6">אנא המתן בזמן שאנחנו מעדכנים את המידע</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-blue-600 h-2.5 rounded-full animate-pulse" style="width: 45%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">עדכון חדשות יושלם תוך 3 דקות</p>
+                    </div>
+                    <div class="time-indicator"></div>
+                </div>
+                
+                <!-- Additional loading cards -->
+                <div class="news-card p-8 rounded-3xl shadow-xl loading-card h-52"></div>
+                <div class="news-card p-8 rounded-3xl shadow-xl loading-card h-52"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating action button -->
+    <div class="fixed bottom-10 left-10 z-40 animate-float">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+                class="w-16 h-16 flex items-center justify-center glass-effect hover:bg-white/40 text-white rounded-full shadow-2xl transition-all duration-500 ripple hover:shadow-3xl group"
+                data-ripple-light="true"
+                data-aos="fade-up"
+                data-aos-delay="300">
+            <i class="fas fa-arrow-up text-2xl group-hover:-translate-y-1 transition-transform"></i>
+        </button>
+    </div>
+
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out-quart',
+                once: true,
+                mirror: false
+            });
+            
+            updateLastUpdateTime();
+            loadNews();
+        });
+
+        const sourceConfig = {
+            'kore': { color: 'kore', name: 'כל רגע', icon: 'fa-bolt' },
+            'ynet': { color: 'ynet', name: 'ynet', icon: 'fa-newspaper' },
+            'inn': { color: 'inn', name: 'ערוץ 7', icon: 'fa-tv' },
+            'walla': { color: 'walla', name: 'וואלה!', icon: 'fa-globe' },
+            'israelhayom': { color: 'israelhayom', name: 'ישראל היום', icon: 'fa-sun' }
+        };
+
+        function formatDate(dateString) {
+            if (!dateString) return 'לא ידוע';
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            return date.toLocaleString('he-IL', options);
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdateTime').textContent = `עודכן לאחרונה: ${formatDate(now)}`;
+        }
+
+        function loadNews() {
+            const container = document.getElementById('newsContainer');
+            const refreshIcon = document.getElementById('refreshIcon');
+            
+            // Add rotation animation to refresh icon
+            refreshIcon.classList.add('animate-spin');
+            
+            // Set loading state with more detailed information
+            container.innerHTML = `
+                <div class="grid gap-10 px-4">
+                    <div class="news-card p-8 rounded-3xl shadow-xl relative overflow-hidden">
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <div class="w-20 h-20 mb-6 rounded-full glass-effect flex items-center justify-center">
+                                <i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">טוען חדשות...</h3>
+                            <p class="text-gray-600 mb-6">אנא המתן בזמן שאנחנו מעדכנים את המידע</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full animate-pulse" style="width: 45%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-4">עדכון חדשות יושלם תוך 3 דקות</p>
+                        </div>
+                        <div class="time-indicator"></div>
+                    </div>
+                    <div class="news-card p-8 rounded-3xl shadow-xl loading-card h-52"></div>
+                    <div class="news-card p-8 rounded-3xl shadow-xl loading-card h-52"></div>
+                </div>
+            `;
+
+            // Simulate API call with timeout for demo purposes
+            setTimeout(() => {
+                fetch('/api/news/')
+                    .then(response => {
+                        if (!response.ok) throw new Error('שגיאה בתקשורת עם השרת');
+                        return response.json();
+                    })
+                    .then(data => {
+                        refreshIcon.classList.remove('animate-spin');
+                        updateLastUpdateTime();
+                        
+                        if (data.status === 'success' && data.data && data.data.length > 0) {
+                            container.innerHTML = '<div class="grid gap-10 px-4"></div>';
+                            const newsWrapper = container.querySelector('div');
+                            
+                            data.data.forEach((item, index) => {
+                                const source = item.source || 'unknown';
+                                const config = sourceConfig[source] || { 
+                                    color: 'gray', 
+                                    name: source,
+                                    icon: 'fa-newspaper'
+                                };
+                                
+                                const newsItem = document.createElement('div');
+                                newsItem.className = `news-card p-8 rounded-3xl shadow-xl relative full-width-card`;
+                                newsItem.style.borderTop = `4px solid rgb(var(--color-${config.color}-500))`;
+                                newsItem.setAttribute('data-aos', 'fade-up');
+                                newsItem.setAttribute('data-aos-delay', `${index * 100}`);
+                                
+                                // Calculate time passed since publication
+                                const pubDate = new Date(item.date || new Date());
+                                const now = new Date();
+                                const diffMinutes = Math.floor((now - pubDate) / (1000 * 60));
+                                let timePassedText = 'זה עתה פורסם';
+                                
+                                if (diffMinutes > 0) {
+                                    timePassedText = `לפני ${diffMinutes} דק${diffMinutes === 1 ? 'ה' : 'ות'}`;
+                                    if (diffMinutes >= 60) {
+                                        const diffHours = Math.floor(diffMinutes / 60);
+                                        timePassedText = `לפני ${diffHours} שע${diffHours === 1 ? 'ה' : 'ות'}`;
+                                    }
+                                }
+                                
+                                newsItem.innerHTML = `
+                                    <div class="flex justify-between items-start mb-6">
+                                        <span class="source-chip bg-${config.color}-500/90 text-white flex items-center gap-3">
+                                            <i class="fas ${config.icon}"></i>
+                                            ${config.name}
+                                        </span>
+                                        <div class="flex flex-col items-end">
+                                            <span class="text-sm text-gray-600/90">${formatDate(item.date)}</span>
+                                            <span class="text-xs text-gray-500 mt-1">${timePassedText}</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-gray-800 mb-5 leading-tight">${item.title || 'ללא כותרת'}</h3>
+                                    <p class="text-gray-700/90 mb-7 line-clamp-3 text-lg leading-relaxed">${item.content || 'לא נמצא תוכן'}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600/90">
+                                            <i class="fas fa-user-edit mr-2"></i>
+                                            ${item.writer_name || 'לא ידוע'}
+                                        </span>
+                                        <span class="text-xs text-gray-500">
+                                            זמן קריאה משוער: 3 דקות
+                                        </span>
+                                    </div>
+                                `;
+                                
+                                newsWrapper.appendChild(newsItem);
+                            });
+                            
+                            // Re-initialize AOS for new elements
+                            AOS.refresh();
+                        } else {
+                            showError('לא נמצאו חדשות', data.message || 'לא הצלחנו לטעון את החדשות כרגע. נסו שוב מאוחר יותר.', 'fa-newspaper', 'yellow');
+                        }
+                    })
+                    .catch(error => {
+                        refreshIcon.classList.remove('animate-spin');
+                        showError('שגיאה בטעינת הנתונים', error.message || 'אירעה שגיאה בעת טעינת החדשות.', 'fa-exclamation-triangle', 'red');
+                    });
+            }, 1200); // Simulate network delay
+        }
+
+        function showError(title, message, icon, color) {
+            const container = document.getElementById('newsContainer');
+            container.innerHTML = `
+                <div class="news-card p-12 rounded-3xl shadow-2xl text-center animate__animated animate__fadeIn mx-auto glass-effect full-width-card"
+                     data-aos="zoom-in">
+                    <div class="w-24 h-24 bg-${color}-100/70 rounded-full flex items-center justify-center mx-auto mb-8 animate__animated animate__bounceIn glass-effect border-2 border-white/30">
+                        <i class="fas ${icon} text-${color}-600 text-4xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">${title}</h3>
+                    <p class="text-gray-700/90 mb-8 text-xl leading-relaxed">${message}</p>
+                    <button onclick="loadNews()" 
+                            class="px-6 py-3 bg-blue-500/90 hover:bg-blue-600 text-white rounded-xl transition-all duration-300 ripple flex items-center gap-3 mx-auto text-lg glass-effect hover:shadow-lg group"
+                            data-ripple-light="true">
+                        <i class="fas fa-sync-alt group-hover:rotate-180 transition-transform duration-500"></i>
+                        נסה שוב
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
